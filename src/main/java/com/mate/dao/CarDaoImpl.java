@@ -3,9 +3,11 @@ package com.mate.dao;
 import com.mate.db.Storage;
 import com.mate.lib.Dao;
 import com.mate.model.Car;
+import com.mate.model.Driver;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Dao
 public class CarDaoImpl implements CarDao {
@@ -38,4 +40,15 @@ public class CarDaoImpl implements CarDao {
     public boolean delete(Long id) {
         return Storage.cars.removeIf(x -> x.getId().equals(id));
     }
+
+    public List<Car> getAllByDriver(Long driverId) {
+        return Storage.cars.stream()
+                .filter(car -> car.getDrivers()
+                        .stream()
+                        .map(Driver::getId)
+                        .collect(Collectors.toList())
+                        .contains(driverId))
+                .collect(Collectors.toList());
+    }
+
 }

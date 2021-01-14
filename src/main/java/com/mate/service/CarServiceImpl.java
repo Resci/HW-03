@@ -1,21 +1,16 @@
 package com.mate.service;
 
 import com.mate.dao.CarDao;
-import com.mate.dao.DriverDao;
 import com.mate.lib.Inject;
 import com.mate.lib.Service;
 import com.mate.model.Car;
 import com.mate.model.Driver;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CarServiceImpl implements CarService {
     @Inject
-    CarDao carDao;
-
-    @Inject
-    DriverDao driverDao;
+    private CarDao carDao;
 
     @Override
     public Car create(Car car) {
@@ -58,10 +53,6 @@ public class CarServiceImpl implements CarService {
 
     @Override
     public List<Car> getAllByDriver(Long driverId) {
-        Driver driver = driverDao.get(driverId).get();
-        return carDao.getAll()
-                .stream()
-                .filter(car -> car.getDrivers().contains(driver))
-                .collect(Collectors.toList());
+        return carDao.getAllByDriver(driverId);
     }
 }
