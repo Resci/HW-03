@@ -11,7 +11,7 @@
  Target Server Version : 80022
  File Encoding         : 65001
 
- Date: 14/01/2021 06:49:31
+ Date: 15/01/2021 01:09:47
 */
 
 SET NAMES utf8mb4;
@@ -22,9 +22,10 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- ----------------------------
 DROP TABLE IF EXISTS `manufacturers`;
 CREATE TABLE `manufacturers`  (
-  `id` bigint(0) NOT NULL AUTO_INCREMENT,
+  `id` bigint(0) UNSIGNED NOT NULL AUTO_INCREMENT,
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `country` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
+  `deleted` bit(1) NOT NULL DEFAULT b'0',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
 

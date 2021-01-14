@@ -1,5 +1,6 @@
-package com.mate.dao;
+package com.mate.dao.listimpl;
 
+import com.mate.dao.ManufacturerDao;
 import com.mate.db.Storage;
 import com.mate.lib.Dao;
 import com.mate.model.Manufacturer;
@@ -7,7 +8,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Dao
 public class ManufacturerDaoImpl implements ManufacturerDao {
     @Override
     public Manufacturer create(Manufacturer manufacturer) {

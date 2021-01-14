@@ -20,18 +20,18 @@ public class Application {
         Manufacturer secondManufacturer = new Manufacturer("BMW", "Germany");
         Manufacturer thirdManufacturer = new Manufacturer("Toyota", "Japan");
 
-        manufacturerService.create(firstManufacturer);
-        manufacturerService.create(secondManufacturer);
-        manufacturerService.create(thirdManufacturer);
+        firstManufacturer = manufacturerService.create(firstManufacturer);
+        secondManufacturer = manufacturerService.create(secondManufacturer);
+        thirdManufacturer = manufacturerService.create(thirdManufacturer);
 
         System.out.println(manufacturerService.getAll());
-        Manufacturer tempManufacturer = manufacturerService.get(1L);
+        Manufacturer tempManufacturer = manufacturerService.get(firstManufacturer.getId());
         System.out.println(tempManufacturer);
         tempManufacturer.setName("Hyundai");
         tempManufacturer.setCountry("South Korea");
         manufacturerService.update(tempManufacturer);
-        System.out.println(manufacturerService.get(1L));
-        manufacturerService.delete(2L);
+        System.out.println(manufacturerService.get(firstManufacturer.getId()));
+        manufacturerService.delete(secondManufacturer.getId());
         System.out.println(manufacturerService.getAll());
 
         DriverService driverService = (DriverService) injector
