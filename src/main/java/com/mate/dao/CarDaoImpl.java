@@ -3,7 +3,6 @@ package com.mate.dao;
 import com.mate.db.Storage;
 import com.mate.lib.Dao;
 import com.mate.model.Car;
-import com.mate.model.Driver;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,9 +44,7 @@ public class CarDaoImpl implements CarDao {
         return Storage.cars.stream()
                 .filter(car -> car.getDrivers()
                         .stream()
-                        .map(Driver::getId)
-                        .collect(Collectors.toList())
-                        .contains(driverId))
+                        .anyMatch(driver -> driver.getId().equals(driverId)))
                 .collect(Collectors.toList());
     }
 
