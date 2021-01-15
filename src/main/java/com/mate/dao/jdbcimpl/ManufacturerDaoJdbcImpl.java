@@ -64,7 +64,7 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Manufacturer> manufacturers = new ArrayList<>();
             while (resultSet.next()) {
-                    manufacturers.add(parseFromResultSet(resultSet));
+                manufacturers.add(parseFromResultSet(resultSet));
             }
             return manufacturers;
         } catch (SQLException e) {
@@ -74,7 +74,8 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String selectQuery = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? and deleted = false";
+        String selectQuery = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?"
+                + " and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(
@@ -92,7 +93,8 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
 
     @Override
     public boolean delete(Long id) {
-        String selectQuery = "UPDATE manufacturers SET deleted = true WHERE id = ? and deleted = false";
+        String selectQuery = "UPDATE manufacturers SET deleted = true WHERE id = ?"
+                + " and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(
