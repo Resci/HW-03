@@ -46,8 +46,7 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
                                  selectQuery, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            resultSet.next();
-            if (resultSet.getBoolean("deleted")) {
+            if (!resultSet.next() || resultSet.getBoolean("deleted")) {
                 return Optional.empty();
             }
             return Optional.of(parseFromResultSet(resultSet));
