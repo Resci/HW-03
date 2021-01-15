@@ -39,14 +39,14 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
 
     @Override
     public Optional<Manufacturer> get(Long id) {
-        String selectQuery = "SELECT * FROM manufacturers where id = ?";
+        String selectQuery = "SELECT * FROM manufacturers where id = ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(
-                                 selectQuery, Statement.RETURN_GENERATED_KEYS)) {
+                                 selectQuery)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next() || resultSet.getBoolean("deleted")) {
+            if (!resultSet.next()) {
                 return Optional.empty();
             }
             return Optional.of(parseFromResultSet(resultSet));
@@ -57,16 +57,14 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
 
     @Override
     public List<Manufacturer> getAll() {
-        String selectQuery = "SELECT * FROM manufacturers";
+        String selectQuery = "SELECT * FROM manufacturers where deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(selectQuery)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Manufacturer> manufacturers = new ArrayList<>();
             while (resultSet.next()) {
-                if (!resultSet.getBoolean("deleted")) {
                     manufacturers.add(parseFromResultSet(resultSet));
-                }
             }
             return manufacturers;
         } catch (SQLException e) {
@@ -76,11 +74,11 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
 
     @Override
     public Manufacturer update(Manufacturer manufacturer) {
-        String selectQuery = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ?";
+        String selectQuery = "UPDATE manufacturers SET name = ?, country = ? WHERE id = ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(
-                                 selectQuery, Statement.RETURN_GENERATED_KEYS)) {
+                                 selectQuery)) {
             preparedStatement.setString(1, manufacturer.getName());
             preparedStatement.setString(2, manufacturer.getCountry());
             preparedStatement.setLong(3, manufacturer.getId());
@@ -88,21 +86,21 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
             preparedStatement.executeUpdate();
             return old;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get connection in method get", e);
+            throw new DataProcessingException("Can't update manufacturer " + manufacturer, e);
         }
     }
 
     @Override
     public boolean delete(Long id) {
-        String selectQuery = "UPDATE manufacturers SET deleted = true WHERE id = ?";
+        String selectQuery = "UPDATE manufacturers SET deleted = true WHERE id = ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                  PreparedStatement preparedStatement =
                          connection.prepareStatement(
-                                 selectQuery, Statement.RETURN_GENERATED_KEYS)) {
+                                 selectQuery)) {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get connection in method get", e);
+            throw new DataProcessingException("Can't delete manufacturer by id " + id, e);
         }
     }
 
