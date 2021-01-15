@@ -33,7 +33,7 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
             }
             return manufacturer;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get connection in method create", e);
+            throw new DataProcessingException("Can't create manufacturer " + manufacturer, e);
         }
     }
 
