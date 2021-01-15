@@ -51,7 +51,7 @@ public class ManufacturerDaoJdbcImpl implements ManufacturerDao {
             }
             return Optional.of(parseFromResultSet(resultSet));
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get connection in method get", e);
+            throw new DataProcessingException("Can't get manufacturer by id: " + id, e);
         }
     }
 
