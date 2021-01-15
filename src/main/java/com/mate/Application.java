@@ -76,6 +76,7 @@ public class Application {
         carService.update(tempCar);
         System.out.println(carService.get(3L));
         System.out.println(carService.getAllByDriver(tempDriver.getId()));
+
         carService.addDriverToCar(tempDriver, tempCar);
         carService.update(tempCar);
         System.out.println(carService.getAllByDriver(tempDriver.getId()));
