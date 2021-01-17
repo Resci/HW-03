@@ -1,5 +1,6 @@
 package com.mate;
 
+import com.mate.dao.jdbcimpl.CarDaoJdbcImpl;
 import com.mate.lib.Injector;
 import com.mate.model.Car;
 import com.mate.model.Driver;
@@ -8,6 +9,7 @@ import com.mate.service.CarService;
 import com.mate.service.DriverService;
 import com.mate.service.ManufacturerService;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Application {
     private static Injector injector = Injector.getInstance("com.mate");
@@ -41,9 +43,9 @@ public class Application {
         Driver secondDriver = new Driver("Bruce Eckel", "23663");
         Driver thirdDriver = new Driver("Linus Torvalds", "46837");
 
-        driverService.create(firstDriver);
-        driverService.create(secondDriver);
-        driverService.create(thirdDriver);
+        firstDriver = driverService.create(firstDriver);
+        secondDriver = driverService.create(secondDriver);
+        thirdDriver = driverService.create(thirdDriver);
 
         System.out.println(driverService.getAll());
         Driver tempDriver = driverService.get(1L);
@@ -59,20 +61,18 @@ public class Application {
         Car secondCar = new Car("i3", secondManufacturer);
         Car thirdCar = new Car("Camry", thirdManufacturer);
 
+        firstCar.setDrivers(List.of(firstDriver, secondDriver));
+        secondCar.setDrivers(List.of(secondDriver, thirdDriver));
+        thirdCar.setDrivers(List.of(firstDriver, thirdDriver));
+
         carService.create(firstCar);
         carService.create(secondCar);
         carService.create(thirdCar);
 
         System.out.println(carService.getAll());
-
-        carService
-                .getAll()
-                .forEach(car -> car.setDrivers(new ArrayList<>(driverService.getAll())));
-
-        System.out.println(carService.getAll());
-        Car tempCar = carService.get(3L);
+        Car tempCar = carService.get(thirdCar.getId());
         System.out.println(tempCar);
-        carService.removeDriverFromCar(tempDriver, tempCar);
+        carService.removeDriverFromCar(thirdDriver, tempCar);
         carService.update(tempCar);
         System.out.println(carService.get(3L));
         System.out.println(carService.getAllByDriver(tempDriver.getId()));
@@ -80,5 +80,8 @@ public class Application {
         carService.addDriverToCar(tempDriver, tempCar);
         carService.update(tempCar);
         System.out.println(carService.getAllByDriver(tempDriver.getId()));
+
+        driverService.delete(thirdDriver.getId());
     }
 }
+

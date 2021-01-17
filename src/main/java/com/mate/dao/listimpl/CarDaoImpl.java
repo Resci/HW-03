@@ -9,7 +9,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Dao
 public class CarDaoImpl implements CarDao {
     @Override
     public Car create(Car car) {
