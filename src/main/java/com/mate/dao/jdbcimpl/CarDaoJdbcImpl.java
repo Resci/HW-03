@@ -42,14 +42,14 @@ public class CarDaoJdbcImpl implements CarDao {
 
     @Override
     public Optional<Car> get(Long id) {
-        String selectQuery = "SELECT cars.id as id, "
+        String selectQuery = "SELECT c.id as id, "
                 + "model, "
                 + "manufacturer_id, "
                 + "m.name as manufacturer_name, "
                 + "m.country as manufacturer_country "
-                + "FROM cars"
-                + " LEFT JOIN manufacturers m on cars.manufacturer_id = m.id"
-                + " where cars.id = ? AND cars.deleted = false";
+                + "FROM cars c"
+                + " LEFT JOIN manufacturers m on c.manufacturer_id = m.id"
+                + " where c.id = ? AND c.deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(selectQuery)) {
@@ -66,14 +66,14 @@ public class CarDaoJdbcImpl implements CarDao {
 
     @Override
     public List<Car> getAll() {
-        String selectQuery = "SELECT cars.id as id, "
+        String selectQuery = "SELECT c.id as id, "
                 + "model, "
                 + "manufacturer_id, "
                 + "m.name as manufacturer_name, "
                 + "m.country as manufacturer_country "
-                + "FROM cars"
-                + " LEFT JOIN manufacturers m on cars.manufacturer_id = m.id"
-                + " where cars.deleted = false";
+                + "FROM cars c"
+                + " LEFT JOIN manufacturers m on c.manufacturer_id = m.id"
+                + " where c.deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(selectQuery)) {
@@ -124,16 +124,16 @@ public class CarDaoJdbcImpl implements CarDao {
 
     @Override
     public List<Car> getAllByDriver(Long driverId) {
-        String selectQuery = "SELECT cars.id as id, "
+        String selectQuery = "SELECT c.id as id, "
                 + "model, "
                 + "manufacturer_id, "
                 + "m.name as manufacturer_name, "
                 + "m.country as manufacturer_country "
-                + "FROM cars"
-                + " LEFT JOIN manufacturers m on cars.manufacturer_id = m.id"
-                + " join cars_drivers cd on cars.id = cd.car_id"
+                + "FROM cars c"
+                + " LEFT JOIN manufacturers m on c.manufacturer_id = m.id"
+                + " join cars_drivers cd on c.id = cd.car_id"
                 + " join drivers d on cd.driver_id = d.id"
-                + " where cars.deleted = false and driver_id = ?";
+                + " where c.deleted = false and driver_id = ?";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(selectQuery)) {
