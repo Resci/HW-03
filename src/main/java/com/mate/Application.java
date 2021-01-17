@@ -1,6 +1,5 @@
 package com.mate;
 
-import com.mate.dao.jdbcimpl.CarDaoJdbcImpl;
 import com.mate.lib.Injector;
 import com.mate.model.Car;
 import com.mate.model.Driver;
@@ -8,7 +7,6 @@ import com.mate.model.Manufacturer;
 import com.mate.service.CarService;
 import com.mate.service.DriverService;
 import com.mate.service.ManufacturerService;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Application {
@@ -54,9 +52,6 @@ public class Application {
         driverService.update(tempDriver);
         System.out.println(driverService.get(1L));
 
-        CarService carService = (CarService) injector
-                .getInstance(CarService.class);
-
         Car firstCar = new Car("Model X", firstManufacturer);
         Car secondCar = new Car("i3", secondManufacturer);
         Car thirdCar = new Car("Camry", thirdManufacturer);
@@ -64,6 +59,9 @@ public class Application {
         firstCar.setDrivers(List.of(firstDriver, secondDriver));
         secondCar.setDrivers(List.of(secondDriver, thirdDriver));
         thirdCar.setDrivers(List.of(firstDriver, thirdDriver));
+
+        CarService carService = (CarService) injector
+                .getInstance(CarService.class);
 
         carService.create(firstCar);
         carService.create(secondCar);

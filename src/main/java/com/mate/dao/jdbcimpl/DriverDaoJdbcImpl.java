@@ -5,8 +5,11 @@ import com.mate.exception.DataProcessingException;
 import com.mate.lib.Dao;
 import com.mate.model.Driver;
 import com.mate.util.ConnectionUtil;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,9 +21,9 @@ public class DriverDaoJdbcImpl implements DriverDao {
         String insertQuery = "INSERT INTO drivers (name, license_number)"
                 + "VALUES (?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement =
-                     connection.prepareStatement(
-                             insertQuery, Statement.RETURN_GENERATED_KEYS)) {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(
+                                insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, driver.getName());
             preparedStatement.setString(2, driver.getLicenceNumber());
             preparedStatement.executeUpdate();
@@ -38,8 +41,8 @@ public class DriverDaoJdbcImpl implements DriverDao {
     public Optional<Driver> get(Long id) {
         String selectQuery = "SELECT * FROM drivers where id = ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement =
-                     connection.prepareStatement(selectQuery)) {
+                PreparedStatement preparedStatement =
+                           connection.prepareStatement(selectQuery)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
@@ -55,8 +58,8 @@ public class DriverDaoJdbcImpl implements DriverDao {
     public List<Driver> getAll() {
         String selectQuery = "SELECT * FROM drivers where deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement =
-                     connection.prepareStatement(selectQuery)) {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(selectQuery)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Driver> drivers = new ArrayList<>();
             while (resultSet.next()) {
@@ -73,8 +76,8 @@ public class DriverDaoJdbcImpl implements DriverDao {
         String selectQuery = "UPDATE drivers SET name = ?, license_number = ? WHERE id = ?"
                 + " and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement =
-                     connection.prepareStatement(selectQuery)) {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(selectQuery)) {
             preparedStatement.setString(1, driver.getName());
             preparedStatement.setString(2, driver.getLicenceNumber());
             preparedStatement.setLong(3, driver.getId());
@@ -91,9 +94,9 @@ public class DriverDaoJdbcImpl implements DriverDao {
         String selectQuery = "UPDATE drivers SET deleted = true WHERE id = ?"
                 + " and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement =
-                     connection.prepareStatement(
-                             selectQuery)) {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(
+                                selectQuery)) {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {

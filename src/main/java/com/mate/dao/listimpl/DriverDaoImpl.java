@@ -2,7 +2,6 @@ package com.mate.dao.listimpl;
 
 import com.mate.dao.DriverDao;
 import com.mate.db.Storage;
-import com.mate.lib.Dao;
 import com.mate.model.Driver;
 import java.util.List;
 import java.util.Objects;
