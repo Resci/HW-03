@@ -227,7 +227,7 @@ public class CarDaoJdbcImpl implements CarDao {
             }
             return drivers;
         } catch (SQLException e) {
-            throw new DataProcessingException("Can't get all drivers", e);
+            throw new DataProcessingException("Can't get all drivers by car id" + carId, e);
         }
     }
 
