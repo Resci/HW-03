@@ -242,5 +242,4 @@ public class CarDaoJdbcImpl implements CarDao {
         car.setDrivers(getAllDriversByCarId(carId));
         return car;
     }
-
 }
