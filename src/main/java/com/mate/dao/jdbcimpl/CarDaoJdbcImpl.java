@@ -106,13 +106,13 @@ public class CarDaoJdbcImpl implements CarDao {
             preparedStatement.setString(1, car.getModel());
             preparedStatement.setLong(2, car.getManufacturer().getId());
             preparedStatement.setLong(3, car.getId());
-            Car old = get(car.getId()).get();
             preparedStatement.executeUpdate();
-            updateDriversByCar(car);
-            return old;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update car " + car, e);
         }
+        deleteAllDrivers(car);
+        insertAllDrivers(car);
+        return car;
     }
 
     @Override
