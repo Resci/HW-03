@@ -81,9 +81,8 @@ public class DriverDaoJdbcImpl implements DriverDao {
             preparedStatement.setString(1, driver.getName());
             preparedStatement.setString(2, driver.getLicenceNumber());
             preparedStatement.setLong(3, driver.getId());
-            Driver old = get(driver.getId()).get();
             preparedStatement.executeUpdate();
-            return old;
+            return driver;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't update driver " + driver, e);
         }
@@ -95,8 +94,7 @@ public class DriverDaoJdbcImpl implements DriverDao {
                 + " and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement(
-                                selectQuery)) {
+                        connection.prepareStatement(selectQuery)) {
             preparedStatement.setLong(1, id);
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
