@@ -140,8 +140,8 @@ public class CarDaoJdbcImpl implements CarDao {
                 + "m.country as manufacturer_country "
                 + "FROM cars c"
                 + " LEFT JOIN manufacturers m on c.manufacturer_id = m.id"
-                + " join cars_drivers cd on c.id = cd.car_id"
-                + " join drivers d on cd.driver_id = d.id"
+                + " LEFT JOIN cars_drivers cd on c.id = cd.car_id"
+                + " LEFT JOIN drivers d on cd.driver_id = d.id"
                 + " where c.deleted = false and driver_id = ?";
         List<Car> cars = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
