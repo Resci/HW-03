@@ -46,11 +46,11 @@ public class Application {
         thirdDriver = driverService.create(thirdDriver);
 
         System.out.println(driverService.getAll());
-        Driver tempDriver = driverService.get(1L);
+        Driver tempDriver = driverService.get(firstDriver.getId());
         System.out.println(tempDriver);
         tempDriver.setLicenceNumber("55555");
         driverService.update(tempDriver);
-        System.out.println(driverService.get(1L));
+        System.out.println(driverService.get(firstDriver.getId()));
 
         Car firstCar = new Car("Model X", firstManufacturer);
         Car secondCar = new Car("i3", secondManufacturer);
@@ -72,9 +72,10 @@ public class Application {
         System.out.println(tempCar);
         carService.removeDriverFromCar(thirdDriver, tempCar);
         carService.update(tempCar);
-        System.out.println(carService.get(3L));
+        System.out.println(carService.get(thirdCar.getId()));
         System.out.println(carService.getAllByDriver(tempDriver.getId()));
 
+        tempCar = carService.get(secondCar.getId());
         carService.addDriverToCar(tempDriver, tempCar);
         carService.update(tempCar);
         System.out.println(carService.getAllByDriver(tempDriver.getId()));
