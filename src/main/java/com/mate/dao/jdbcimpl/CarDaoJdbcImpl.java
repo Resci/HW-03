@@ -116,6 +116,7 @@ public class CarDaoJdbcImpl implements CarDao {
                         connection.prepareStatement(
                              selectQuery)) {
             preparedStatement.setLong(1, id);
+
             return preparedStatement.executeUpdate() > 0;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't delete car by id " + id, e);
