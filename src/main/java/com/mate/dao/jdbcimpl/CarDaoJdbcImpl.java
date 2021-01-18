@@ -54,18 +54,22 @@ public class CarDaoJdbcImpl implements CarDao {
                 + "FROM cars c"
                 + " LEFT JOIN manufacturers m on c.manufacturer_id = m.id"
                 + " where c.id = ? AND c.deleted = false";
+        Car car = null;
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(selectQuery)) {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()) {
-                return Optional.empty();
+            if (resultSet.next()) {
+                car = parseCarFromResultSet(resultSet)); // return only car with set manufacturer here
             }
-            return Optional.of(parseCarFromResultSet(resultSet));
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get car by id: " + id, e);
         }
+        if (car != null) {
+             car.setDrivers(getAllDriversByCarId(car.getId());
+        }
+        return Optional.ofNullable(car);
     }
 
     @Override
