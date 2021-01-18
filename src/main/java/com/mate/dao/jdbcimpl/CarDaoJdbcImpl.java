@@ -19,8 +19,8 @@ import java.util.stream.Collectors;
 
 @Dao
 public class CarDaoJdbcImpl implements CarDao {
+    private static final int PLUG = 0;
     private static final int SHIFT = 2;
-    public static final int PLUG = 0;
 
     @Override
     public Car create(Car car) {
@@ -61,13 +61,13 @@ public class CarDaoJdbcImpl implements CarDao {
             preparedStatement.setLong(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                car = parseCarFromResultSet(resultSet); // return only car with set manufacturer here
+                car = parseCarFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get car by id: " + id, e);
         }
         if (car != null) {
-             car.setDrivers(getAllDriversByCarId(car.getId()));
+            car.setDrivers(getAllDriversByCarId(car.getId()));
         }
         return Optional.ofNullable(car);
     }
@@ -189,8 +189,8 @@ public class CarDaoJdbcImpl implements CarDao {
         int size = exceptions.size();
         String insertQuery = "DELETE FROM cars_drivers WHERE car_id = ? "
                 + "AND NOT driver_id IN ("
-                + PLUG + ", ?".repeat(size) +
-                ");";
+                + PLUG + ", ?".repeat(size)
+                + ");";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(insertQuery)) {
