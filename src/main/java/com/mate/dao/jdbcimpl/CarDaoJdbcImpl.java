@@ -15,9 +15,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Dao
 public class CarDaoJdbcImpl implements CarDao {
+    private static final int SHIFT = 2;
+    public static final int PLUG = 0;
+
     @Override
     public Car create(Car car) {
         String insertQuery = "INSERT INTO cars (model, manufacturer_id)"
@@ -156,27 +160,19 @@ public class CarDaoJdbcImpl implements CarDao {
     }
 
     private void insertAllDrivers(Long carId, List<Driver> drivers) {
-        if (drivers == null || drivers.size() == 0) {
+        if (drivers.size() == 0) {
             return;
         }
-        StringBuilder transaction = new StringBuilder(
-                "INSERT INTO cars_drivers (car_id, driver_id) VALUES ");
-        for (int i = 0; i < drivers.size(); i++) {
-            transaction.append("(?, ?)");
-            if (i != drivers.size() - 1) {
-                transaction.append(", ");
-            }
-        }
-        transaction.append("ON DUPLICATE KEY UPDATE car_id = car_id");
-        String insertQuery = transaction.toString();
+        String insertQuery = "INSERT INTO cars_drivers (car_id, driver_id) VALUES "
+                + drivers.stream().map(driver -> "(?, ?)").collect(Collectors.joining(", "))
+                + " ON DUPLICATE KEY UPDATE car_id = car_id";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
-                        connection.prepareStatement(
-                             insertQuery)) {
+                        connection.prepareStatement(insertQuery)) {
             for (int i = 0; i < drivers.size(); i++) {
                 Driver driver = drivers.get(i);
-                preparedStatement.setLong((i * 2) + 1, carId);
-                preparedStatement.setLong((i * 2) + 2, driver.getId());
+                preparedStatement.setLong((i * SHIFT) + 1, carId);
+                preparedStatement.setLong((i * SHIFT) + 2, driver.getId());
             }
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -185,19 +181,11 @@ public class CarDaoJdbcImpl implements CarDao {
     }
 
     private void deleteAllDriversExceptList(Long carId, List<Driver> exceptions) {
-        int size;
-        if (exceptions == null) {
-            size = 0;
-        } else {
-            size = exceptions.size();
-        }
-        StringBuilder transaction = new StringBuilder(
-                "DELETE FROM cars_drivers WHERE car_id = ? AND NOT driver_id IN (0");
-        for (int i = 0; i < size; i++) {
-            transaction.append(", ?");
-        }
-        transaction.append(");");
-        String insertQuery = transaction.toString();
+        int size = exceptions.size();
+        String insertQuery = "DELETE FROM cars_drivers WHERE car_id = ? "
+                + "AND NOT driver_id IN ("
+                + PLUG + ", ?".repeat(size) +
+                ");";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(
@@ -205,7 +193,7 @@ public class CarDaoJdbcImpl implements CarDao {
             preparedStatement.setLong(1, carId);
             for (int i = 0; i < size; i++) {
                 Driver driver = exceptions.get(i);
-                preparedStatement.setLong((i) + 2, driver.getId());
+                preparedStatement.setLong((i) + SHIFT, driver.getId());
             }
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
