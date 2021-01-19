@@ -1,9 +1,11 @@
-package com.mate.service;
+package com.mate.service.impl;
 
 import com.mate.dao.ManufacturerDao;
 import com.mate.lib.Inject;
 import com.mate.lib.Service;
 import com.mate.model.Manufacturer;
+import com.mate.service.ManufacturerService;
+
 import java.util.List;
 
 @Service
