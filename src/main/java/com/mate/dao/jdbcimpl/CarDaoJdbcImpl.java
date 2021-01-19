@@ -37,11 +37,11 @@ public class CarDaoJdbcImpl implements CarDao {
             if (resultSet.next()) {
                 car.setId(resultSet.getObject(1, Long.class));
             }
-            insertAllDrivers(car);
-            return car;
         } catch (SQLException e) {
             throw new DataProcessingException("Can't create car " + car, e);
         }
+        insertAllDrivers(car);
+        return car;
     }
 
     @Override
@@ -52,7 +52,7 @@ public class CarDaoJdbcImpl implements CarDao {
                 + "m.name as manufacturer_name, "
                 + "m.country as manufacturer_country "
                 + "FROM cars c"
-                + " LEFT JOIN manufacturers m on c.manufacturer_id = m.id"
+                + " JOIN manufacturers m on c.manufacturer_id = m.id"
                 + " where c.id = ? AND c.deleted = false";
         Car car = null;
         try (Connection connection = ConnectionUtil.getConnection();
@@ -80,7 +80,7 @@ public class CarDaoJdbcImpl implements CarDao {
                 + "m.name as manufacturer_name, "
                 + "m.country as manufacturer_country "
                 + "FROM cars c"
-                + " LEFT JOIN manufacturers m on c.manufacturer_id = m.id"
+                + " JOIN manufacturers m on c.manufacturer_id = m.id"
                 + " where c.deleted = false";
         List<Car> cars = new ArrayList<>();
         try (Connection connection = ConnectionUtil.getConnection();
@@ -139,9 +139,9 @@ public class CarDaoJdbcImpl implements CarDao {
                 + "m.name as manufacturer_name, "
                 + "m.country as manufacturer_country "
                 + "FROM cars c"
-                + " LEFT JOIN manufacturers m on c.manufacturer_id = m.id"
-                + " LEFT JOIN cars_drivers cd on c.id = cd.car_id"
-                + " LEFT JOIN drivers d on cd.driver_id = d.id"
+                + " JOIN manufacturers m on c.manufacturer_id = m.id"
+                + " JOIN cars_drivers cd on c.id = cd.car_id"
+                + " JOIN drivers d on cd.driver_id = d.id"
                 + " where c.deleted = false and driver_id = ?"
                 + " and d.deleted = false";
         List<Car> cars = new ArrayList<>();
