@@ -18,10 +18,10 @@
     </tr>
     <tr>
         <td>
-            <input type="text" name="name" form="driver">
+            <input type="text" name="name" form="driver" required>
         </td>
         <td>
-            <input type="text" name="licence_number" form="driver">
+            <input type="text" name="licence_number" form="driver" required>
         </td>
         <td>
             <input type="submit" name="add" form="driver">

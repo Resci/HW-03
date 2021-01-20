@@ -18,13 +18,13 @@
     </tr>
     <tr>
         <td>
-            <input type="text" name="name" form="manufacturer">
+            <input type="text" name="name" form="manufacturer" required>
         </td>
         <td>
-            <input type="text" name="country" form="manufacturer">
+            <input type="text" name="country" form="manufacturer" required>
         </td>
         <td>
-            <input type="submit" name="add" form="manufacturer">
+            <input type="submit" name="add" form="manufacturer" required>
         </td>
     </tr>
 </table>
