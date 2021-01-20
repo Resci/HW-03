@@ -19,15 +19,19 @@ public class AddDriverToCarController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/views/cars/add_driver_to_car.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/cars/drivers/add.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
-        carService.addDriverToCar(
-                driverService.get(Long.parseLong(req.getParameter("driver_id"))),
-                carService.get(Long.parseLong(req.getParameter("car_id"))));
-        req.getRequestDispatcher("/WEB-INF/views/cars/add_driver_to_car.jsp").forward(req, resp);
+        try {
+            carService.addDriverToCar(
+                    driverService.get(Long.parseLong(req.getParameter("driver_id"))),
+                    carService.get(Long.parseLong(req.getParameter("car_id"))));
+        } catch (RuntimeException e) {
+            req.setAttribute("error", "Can't add relations. Please check ID`s");
+        }
+        req.getRequestDispatcher("/WEB-INF/views/cars/drivers/add.jsp").forward(req, resp);
     }
 }
