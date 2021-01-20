@@ -35,7 +35,7 @@ public class IndexController extends HttpServlet {
             resp.sendRedirect("/cars/add");
         }
         if (req.getParameter("Add driver to car") != null) {
-            resp.sendRedirect("/cars/add_driver_to_car");
+            resp.sendRedirect("/cars/drivers/add");
         }
     }
 }
