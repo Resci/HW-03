@@ -18,10 +18,10 @@
     </tr>
     <tr>
         <td>
-            <input type="text" name="car_id" form="car">
+            <input type="number" name="car_id" form="car">
         </td>
         <td>
-            <input type="text" name="driver_id" form="car">
+            <input type="number" name="driver_id" form="car">
         </td>
         <td>
             <input type="submit" name="add" form="car">
