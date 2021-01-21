@@ -28,9 +28,7 @@
                 <c:out value="${manufacturer.country}"/>
             </td>
             <td>
-                <form name="delete_form" method="post" action="${pageContext.request.contextPath}/manufacturers/delete">
-                    <button name="delete" value="${manufacturer.id}" type="submit">Delete this manufacturer</button>
-                </form>
+                <a href="${pageContext.request.contextPath}/manufacturers/delete?id=${manufacturer.id}">DELETE</a>
             </td>
         </tr>
     </c:forEach>
