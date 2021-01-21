@@ -15,6 +15,7 @@
         <th>Model</th>
         <th>Manufacturer name</th>
         <th>Manufacturer country</th>
+        <th>Drivers</th>
         <th>Delete</th>
     </tr>
     <c:forEach var="car" items="${cars}">
@@ -30,6 +31,11 @@
             </td>
             <td>
                 <c:out value="${car.manufacturer.country}"/>
+            </td>
+            <td>
+                <c:forEach var="driver" items="${car.drivers}">
+                    ${driver.id} ${driver.name} ${driver.licenceNumber} <br>
+                </c:forEach>
             </td>
             <td>
                 <form name="delete_form" method="post" action="${pageContext.request.contextPath}/cars/delete">
