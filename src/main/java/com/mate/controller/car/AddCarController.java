@@ -30,6 +30,6 @@ public class AddCarController extends HttpServlet {
                 req.getParameter("model"),
                 manufacturerService.get(
                         Long.parseLong(req.getParameter("manufacturer_id")))));
-        req.getRequestDispatcher("/WEB-INF/views/cars/add.jsp").forward(req, resp);
+        resp.sendRedirect("/cars/add");
     }
 }
