@@ -9,7 +9,6 @@
 </head>
 <body>
 <form method="post" id="car"></form>
-<h4 style="text-align: center; color: red">${error}</h4>
 <h1 class="table_dark">Add driver to car:</h1>
 <table border="1" class="table_dark">
     <tr>

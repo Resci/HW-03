@@ -4,7 +4,6 @@ import com.mate.lib.Injector;
 import com.mate.service.CarService;
 import com.mate.service.DriverService;
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,13 +25,9 @@ public class AddDriverToCarController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
-        try {
             carService.addDriverToCar(
                     driverService.get(Long.parseLong(req.getParameter("driver_id"))),
                     carService.get(Long.parseLong(req.getParameter("car_id"))));
-        } catch (NoSuchElementException e) {
-            req.setAttribute("error", "Can't add relations. Please check ID`s");
-        }
         req.getRequestDispatcher("/WEB-INF/views/cars/drivers/add.jsp").forward(req, resp);
     }
 }

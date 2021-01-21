@@ -5,7 +5,6 @@ import com.mate.model.Car;
 import com.mate.service.CarService;
 import com.mate.service.ManufacturerService;
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -27,14 +26,10 @@ public class AddCarController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException, ServletException {
-        try {
             carService.create(new Car(
                     req.getParameter("model"),
                     manufacturerService.get(
                             Long.parseLong(req.getParameter("manufacturer_id")))));
-        } catch (NoSuchElementException e) {
-            req.setAttribute("error", "Can't create user, please check manufacturer id");
-        }
         req.getRequestDispatcher("/WEB-INF/views/cars/add.jsp").forward(req, resp);
     }
 }
