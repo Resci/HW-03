@@ -38,9 +38,7 @@
                 </c:forEach>
             </td>
             <td>
-                <form name="delete_form" method="post" action="${pageContext.request.contextPath}/cars/delete">
-                    <button name="delete" value="${car.id}" type="submit">Delete this car</button>
-                </form>
+                <a href="${pageContext.request.contextPath}/cars/delete?id=${car.id}">DELETE</a>
             </td>
         </tr>
     </c:forEach>

@@ -28,9 +28,7 @@
                 <c:out value="${driver.licenceNumber}"/>
             </td>
             <td>
-                <form name="delete_form" method="post" action="${pageContext.request.contextPath}/drivers/delete">
-                    <button name="delete" value="${driver.id}" type="submit">Delete this driver</button>
-                </form>
+                <a href="${pageContext.request.contextPath}/drivers/delete?id=${driver.id}">DELETE</a>
             </td>
         </tr>
     </c:forEach>

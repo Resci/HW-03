@@ -13,9 +13,9 @@ public class DeleteCarController extends HttpServlet {
             .getInstance(CarService.class);
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        carService.delete(Long.parseLong(req.getParameter("delete")));
+        carService.delete(Long.parseLong(req.getParameter("id")));
         resp.sendRedirect("/cars/all");
     }
 }
