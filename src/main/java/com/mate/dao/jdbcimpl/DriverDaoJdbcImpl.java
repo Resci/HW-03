@@ -75,7 +75,8 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     @Override
     public Driver update(Driver driver) {
-        String selectQuery = "UPDATE drivers SET name = ?, license_number = ?, login = ?, password = ? WHERE id = ?"
+        String selectQuery = "UPDATE drivers SET name = ?, license_number = ?,"
+                + " login = ?, password = ? WHERE id = ?"
                 + " and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
@@ -108,7 +109,7 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     private Driver parseFromResultSet(ResultSet resultSet) throws SQLException {
         Long driverId = resultSet.getObject("id", Long.class);
-        if (driverId == null){
+        if (driverId == null) {
             return null;
         }
         String name = resultSet.getNString("name");
@@ -126,8 +127,8 @@ public class DriverDaoJdbcImpl implements DriverDao {
     public Optional<Driver> findByLogin(String login) {
         String selectQuery = "SELECT * FROM drivers where login LIKE ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement preparedStatement =
-                     connection.prepareStatement(selectQuery)) {
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(selectQuery)) {
             preparedStatement.setString(1, login);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (!resultSet.next()) {
