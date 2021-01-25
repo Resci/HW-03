@@ -8,14 +8,6 @@ import java.util.Properties;
 public class ConnectionUtil {
     private static final String url = "jdbc:mysql://localhost:3306/taxi_schema?serverTimezone=UTC";
 
-    static {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Can't find SQL Driver", e);
-        }
-    }
-
     public static Connection getConnection() {
         Properties dbProperties = new Properties();
         dbProperties.put("user", "root");
