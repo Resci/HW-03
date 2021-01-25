@@ -36,7 +36,7 @@ public class AuthenticationFilter implements Filter {
         }
 
         Long driverId = (Long) request.getSession().getAttribute(DRIVER_ID);
-        if (driverId == null || driverService.get(driverId) == null) {
+        if (driverService.get(driverId) == null) {
             response.sendRedirect("/drivers/login");
             return;
         }
