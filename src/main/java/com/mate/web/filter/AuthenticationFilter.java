@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class AuthenticationFilter implements Filter {
     private static final String DRIVER_ID = "driver_id";
-    private static final Set<String> allowedUrls = new TreeSet<>();;
+    private static final Set<String> allowedUrls = new TreeSet<>();
     private static final Injector injector = Injector.getInstance("com.mate");
     private final DriverService driverService = (DriverService) injector
             .getInstance(DriverService.class);
