@@ -18,14 +18,16 @@ import java.util.Optional;
 public class DriverDaoJdbcImpl implements DriverDao {
     @Override
     public Driver create(Driver driver) {
-        String insertQuery = "INSERT INTO drivers (name, license_number)"
-                + "VALUES (?, ?)";
+        String insertQuery = "INSERT INTO drivers (name, license_number, login, password)"
+                + "VALUES (?, ?, ?, ?)";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(
                                 insertQuery, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, driver.getName());
             preparedStatement.setString(2, driver.getLicenceNumber());
+            preparedStatement.setString(3, driver.getLogin());
+            preparedStatement.setString(4, driver.getPassword());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -39,7 +41,7 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     @Override
     public Optional<Driver> get(Long id) {
-        String selectQuery = "SELECT * FROM drivers where id = ? and deleted = false";
+        String selectQuery = "SELECT * FROM drivers WHERE id = ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                            connection.prepareStatement(selectQuery)) {
@@ -56,7 +58,7 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     @Override
     public List<Driver> getAll() {
-        String selectQuery = "SELECT * FROM drivers where deleted = false";
+        String selectQuery = "SELECT * FROM drivers WHERE deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(selectQuery)) {
@@ -73,14 +75,17 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     @Override
     public Driver update(Driver driver) {
-        String selectQuery = "UPDATE drivers SET name = ?, license_number = ? WHERE id = ?"
+        String selectQuery = "UPDATE drivers SET name = ?, license_number = ?,"
+                + " login = ?, password = ? WHERE id = ?"
                 + " and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(selectQuery)) {
             preparedStatement.setString(1, driver.getName());
             preparedStatement.setString(2, driver.getLicenceNumber());
-            preparedStatement.setLong(3, driver.getId());
+            preparedStatement.setString(3, driver.getLogin());
+            preparedStatement.setString(4, driver.getPassword());
+            preparedStatement.setLong(5, driver.getId());
             preparedStatement.executeUpdate();
             return driver;
         } catch (SQLException e) {
@@ -103,11 +108,32 @@ public class DriverDaoJdbcImpl implements DriverDao {
     }
 
     private Driver parseFromResultSet(ResultSet resultSet) throws SQLException {
-        long driverId = resultSet.getObject("id", Long.class);
+        Long driverId = resultSet.getObject("id", Long.class);
         String name = resultSet.getNString("name");
         String licenseNumber = resultSet.getNString("license_number");
+        String login = resultSet.getNString("login");
+        String password = resultSet.getNString("password");
         Driver driver = new Driver(name, licenseNumber);
+        driver.setLogin(login);
+        driver.setPassword(password);
         driver.setId(driverId);
         return driver;
+    }
+
+    @Override
+    public Optional<Driver> findByLogin(String login) {
+        String selectQuery = "SELECT * FROM drivers WHERE login = ? and deleted = false";
+        try (Connection connection = ConnectionUtil.getConnection();
+                PreparedStatement preparedStatement =
+                        connection.prepareStatement(selectQuery)) {
+            preparedStatement.setString(1, login);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (!resultSet.next()) {
+                return Optional.empty();
+            }
+            return Optional.of(parseFromResultSet(resultSet));
+        } catch (SQLException e) {
+            throw new DataProcessingException("Can't get driver by login: " + login, e);
+        }
     }
 }
