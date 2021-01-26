@@ -41,15 +41,11 @@ public class AuthenticationFilter implements Filter {
         }
 
         Long driverId = (Long) request.getSession().getAttribute(DRIVER_ID);
-        try {
-            if (driverId == null) {
-                throw new NoSuchElementException("Value is null");
-            }
-            driverService.get(driverId);
-        } catch (NoSuchElementException e) {
+        if (driverId == null) {
             response.sendRedirect("/drivers/login");
             return;
         }
+
 
         filterChain.doFilter(request, response);
     }
