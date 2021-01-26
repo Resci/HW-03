@@ -3,7 +3,6 @@ package com.mate.web.filter;
 import com.mate.lib.Injector;
 import com.mate.service.DriverService;
 import java.io.IOException;
-import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.TreeSet;
 import javax.servlet.Filter;
