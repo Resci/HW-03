@@ -53,7 +53,7 @@ public class DriverDaoJdbcImpl implements DriverDao {
             if (!resultSet.next()) {
                 return Optional.empty();
             }
-            return Optional.ofNullable(parseFromResultSet(resultSet));
+            return Optional.of(parseFromResultSet(resultSet));
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get driver by id: " + id, e);
         }
@@ -134,7 +134,7 @@ public class DriverDaoJdbcImpl implements DriverDao {
             if (!resultSet.next()) {
                 return Optional.empty();
             }
-            return Optional.ofNullable(parseFromResultSet(resultSet));
+            return Optional.of(parseFromResultSet(resultSet));
         } catch (SQLException e) {
             throw new DataProcessingException("Can't get driver by login: " + login, e);
         }
