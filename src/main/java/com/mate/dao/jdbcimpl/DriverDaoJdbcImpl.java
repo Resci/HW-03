@@ -41,9 +41,6 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     @Override
     public Optional<Driver> get(Long id) {
-        if (id == null) {
-            return Optional.empty();
-        }
         String selectQuery = "SELECT * FROM drivers WHERE id = ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
