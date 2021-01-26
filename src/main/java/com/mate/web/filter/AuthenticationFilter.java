@@ -1,7 +1,6 @@
 package com.mate.web.filter;
 
 import com.mate.lib.Inject;
-import com.mate.lib.Injector;
 import com.mate.service.DriverService;
 import java.io.IOException;
 import java.util.Set;
