@@ -41,6 +41,9 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     @Override
     public Optional<Driver> get(Long id) {
+        if (id == null) {
+            return Optional.empty();
+        }
         String selectQuery = "SELECT * FROM drivers where id = ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
@@ -109,9 +112,6 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     private Driver parseFromResultSet(ResultSet resultSet) throws SQLException {
         Long driverId = resultSet.getObject("id", Long.class);
-        if (driverId == null) {
-            return null;
-        }
         String name = resultSet.getNString("name");
         String licenseNumber = resultSet.getNString("license_number");
         String login = resultSet.getNString("login");
