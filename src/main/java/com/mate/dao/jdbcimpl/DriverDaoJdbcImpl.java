@@ -44,7 +44,7 @@ public class DriverDaoJdbcImpl implements DriverDao {
         if (id == null) {
             return Optional.empty();
         }
-        String selectQuery = "SELECT * FROM drivers where id = ? and deleted = false";
+        String selectQuery = "SELECT * FROM drivers WHERE id = ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                            connection.prepareStatement(selectQuery)) {
@@ -61,7 +61,7 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     @Override
     public List<Driver> getAll() {
-        String selectQuery = "SELECT * FROM drivers where deleted = false";
+        String selectQuery = "SELECT * FROM drivers WHERE deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(selectQuery)) {
@@ -125,7 +125,7 @@ public class DriverDaoJdbcImpl implements DriverDao {
 
     @Override
     public Optional<Driver> findByLogin(String login) {
-        String selectQuery = "SELECT * FROM drivers where login LIKE ? and deleted = false";
+        String selectQuery = "SELECT * FROM drivers WHERE login = ? and deleted = false";
         try (Connection connection = ConnectionUtil.getConnection();
                 PreparedStatement preparedStatement =
                         connection.prepareStatement(selectQuery)) {
