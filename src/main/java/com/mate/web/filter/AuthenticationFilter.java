@@ -1,5 +1,6 @@
 package com.mate.web.filter;
 
+import com.mate.lib.Inject;
 import com.mate.lib.Injector;
 import com.mate.service.DriverService;
 import java.io.IOException;
@@ -17,9 +18,8 @@ import javax.servlet.http.HttpServletResponse;
 public class AuthenticationFilter implements Filter {
     private static final String DRIVER_ID = "driver_id";
     private static final Set<String> allowedUrls = new TreeSet<>();
-    private static final Injector injector = Injector.getInstance("com.mate");
-    private final DriverService driverService = (DriverService) injector
-            .getInstance(DriverService.class);
+    @Inject
+    private DriverService driverService;
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
